@@ -6,8 +6,6 @@ import {
   WebGLRenderer,
 } from 'three';
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
 /**
  * Three.js helper
  */
@@ -68,7 +66,7 @@ export default function useThree() {
   /**
    * init three
    */
-  function init(params) {
+  async function init(params) {
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         conf[key] = value;
@@ -89,6 +87,7 @@ export default function useThree() {
     obj.renderer.autoClear = conf.autoClear;
 
     if (conf.orbit_ctrl) {
+      const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js')
       obj.orbitCtrl = new OrbitControls(obj.camera, obj.renderer.domElement);
       if (conf.orbit_ctrl instanceof Object) {
         Object.entries(conf.orbit_ctrl).forEach(([key, value]) => {
