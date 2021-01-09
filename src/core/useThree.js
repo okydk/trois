@@ -87,13 +87,14 @@ export default function useThree() {
     obj.renderer.autoClear = conf.autoClear;
 
     if (conf.orbit_ctrl) {
-      const { OrbitControls } = await import('three/examples/jsm/controls/OrbitControls.js')
-      obj.orbitCtrl = new OrbitControls(obj.camera, obj.renderer.domElement);
-      if (conf.orbit_ctrl instanceof Object) {
-        Object.entries(conf.orbit_ctrl).forEach(([key, value]) => {
-          obj.orbitCtrl[key] = value;
-        });
-      }
+      import('three/examples/jsm/controls/OrbitControls.js').then(({ OrbitControls }) => {
+        obj.orbitCtrl = new OrbitControls(obj.camera, obj.renderer.domElement);
+        if (conf.orbit_ctrl instanceof Object) {
+          Object.entries(conf.orbit_ctrl).forEach(([key, value]) => {
+            obj.orbitCtrl[key] = value;
+          });
+        }
+      })
     }
 
     if (conf.width && conf.height) {
