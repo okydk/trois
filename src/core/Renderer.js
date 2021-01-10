@@ -14,6 +14,7 @@ export default {
     shadow: Boolean,
     width: String,
     height: String,
+    xr: Boolean,
   },
   setup() {
     return {
@@ -42,12 +43,15 @@ export default {
       resize: this.resize,
       width: this.width,
       height: this.height,
-    };
+      xr: this.xr,
+    }
 
     if (this.three.init(params)) {
       this.three.renderer.shadowMap.enabled = this.shadow;
-      if (this.three.composer) this.animateC();
-      else this.animate();
+      if (params.xr) {
+        this.three.renderer.xr.enabled = params.xr;
+      }
+      this.three.renderer.setAnimationLoop(this.animate)
     };
 
     this.onMountedCallbacks.forEach(c => c());
@@ -67,13 +71,8 @@ export default {
       this.three.onAfterResize(callback);
     },
     animate() {
-      if (this.raf) requestAnimationFrame(this.animate);
-      this.three.render();
-    },
-    animateC() {
-      if (this.raf) requestAnimationFrame(this.animateC);
-      this.three.renderC();
-    },
+      if (this.raf) this.three[this.three.composer ? 'renderC' : 'render']();
+    }
   },
   render() {
     return h(

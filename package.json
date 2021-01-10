@@ -2,7 +2,7 @@
   "name": "troisjs",
   "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --https",
     "build": "vite build",
     "rollup": "rollup -c"
   },
